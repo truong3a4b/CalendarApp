@@ -18,8 +18,6 @@ Allows easy date selection and event marking with a clean UI.
 ## Installation
 
 Add JitPack to your project:
-
-```gradle
 // settings.gradle (or top-level build.gradle in older projects)
 dependencyResolutionManagement {
     repositories {
