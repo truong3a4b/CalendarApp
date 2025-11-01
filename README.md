@@ -18,6 +18,7 @@ Allows easy date selection and event marking with a clean UI.
 ## Installation
 
 Add JitPack to your project:
+```
 // settings.gradle (or top-level build.gradle in older projects)
 dependencyResolutionManagement {
     repositories {
@@ -26,14 +27,16 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
-
+```
 Add the library dependency:
-
+```
 dependencies {
     implementation 'com.github.truong3a4b:CalendarApp:${version}'
 }
+```
 ## Usage
 ### XML
+```
 <com.nxt.calendarview.CalendarView
     android:id="@+id/calendarView"
     android:layout_width="match_parent"
@@ -49,8 +52,9 @@ dependencies {
     app:selectedColor="#000000"
     app:selectedIndicator="@drawable/bg_day_selected2"
  />
-
+```
 ### Kotlin
+```
 val calendarView = findViewById<CalendarView>(R.id.calendarView)
 
 // Listen for date selection
@@ -67,6 +71,6 @@ getDayOfYear()
 setToday(date: Date)
 getToday()
 removeEvent(date: Date)
-
+```
 ## Result
 <img width="369" height="447" alt="image" src="https://github.com/user-attachments/assets/6f5b0e47-8543-4f62-bc62-8f1b4d2d08bd" />
