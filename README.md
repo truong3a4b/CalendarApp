@@ -51,6 +51,9 @@ dependencies {
     app:todayColor="#FF148B"
     app:selectedColor="#000000"
     app:selectedIndicator="@drawable/bg_day_selected2"
+    //showEventIndicator
+    //evenIndicatorColor
+    //...
  />
 ```
 ### Kotlin
