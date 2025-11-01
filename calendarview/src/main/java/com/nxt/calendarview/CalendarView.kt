@@ -129,6 +129,7 @@ class CalendarView @JvmOverloads constructor(
         }
         gridDays.setOnItemClickListener { _, _, position, _ ->
             val selectedDate = (gridDays.adapter.getItem(position) as Date)
+            onDateSelected?.invoke(selectedDate)
             setSelectedDate(selectedDate)
         }
     }
