@@ -1,9 +1,8 @@
-package com.nxt.calendarapp
+package com.nxt.calendarview
 
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import androidx.core.widget.TextViewCompat
 import java.text.SimpleDateFormat
-import java.time.format.TextStyle
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -119,5 +117,3 @@ class CalendarAdapter(
         notifyDataSetChanged()
     }
 }
-
-

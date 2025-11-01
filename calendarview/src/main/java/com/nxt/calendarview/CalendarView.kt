@@ -1,4 +1,4 @@
-package com.nxt.calendarapp
+package com.nxt.calendarview
 
 import android.content.Context
 import android.graphics.Color
