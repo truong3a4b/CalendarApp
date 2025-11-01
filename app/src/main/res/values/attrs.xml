@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CalendarView">
+        <!--        Màu background-->
+        <attr name="backgroundColor" format="color" />
+        <!-- Màu chữ cho ngày -->
+        <attr name="dayTextStyle" format="reference" />
+        <!--        Màu chữ cho thứ-->
+        <attr name="weekTextStyle" format="reference" />
+        <!-- Màu chữ cho header tháng -->
+        <attr name="monthTextStyle" format="reference" />
+        <!-- Có hiển thị tên thứ không -->
+        <attr name="showWeekLabels" format="boolean" />
+
+        <!-- icon cho nút lùi tháng -->
+        <attr name="prevIcon" format="reference" />
+
+        <!-- icon cho nút tiến tháng -->
+        <attr name="nextIcon" format="reference" />
+
+        <!--        Today date Indicator-->
+        <attr name="todayIndicator" format="reference" />
+
+        <!--        Today date color-->
+        <attr name="todayColor" format="color" />
+        <!--    custom tên thứ-->
+        <attr name="weekDays" format="reference" />
+        <attr name="weekDaysText" format="string" />
+<!--        Selected day-->
+        <attr name="selectedIndicator" format="reference"/>
+        <attr name="selectedColor" format="color"/>
+    </declare-styleable>
+</resources>
