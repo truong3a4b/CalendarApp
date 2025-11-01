@@ -64,7 +64,7 @@ class CalendarAdapter(
         val isToday = sameDay(today, date)
         val isCurrentMonth = cal.get(Calendar.MONTH) == currentCalendar.get(Calendar.MONTH)
         val isSelected = selectedDate?.let { sameDay(date, selectedDate!!) } == true
-
+        TextViewCompat.setTextAppearance(tvDay, dayTextStyle)
         when {
             isSelected -> {
                 tvDay.background = selectedIndicator
@@ -80,7 +80,6 @@ class CalendarAdapter(
             }
             else -> {
                 tvDay.setBackgroundColor(backgroundColor)
-                TextViewCompat.setTextAppearance(tvDay, dayTextStyle)
             }
         }
 

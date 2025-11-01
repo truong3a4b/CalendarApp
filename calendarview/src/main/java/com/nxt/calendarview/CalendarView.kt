@@ -63,7 +63,6 @@ class CalendarView @JvmOverloads constructor(
         )
 
 
-
         // đọc attrs
         context.theme.obtainStyledAttributes(
             attrs,
@@ -77,7 +76,8 @@ class CalendarView @JvmOverloads constructor(
                 selectedColor = getColor(R.styleable.CalendarView_selectedColor, backgroundColor)
                 selectedIndicator = getDrawable(R.styleable.CalendarView_selectedIndicator)
                 showEventIndicator = getBoolean(R.styleable.CalendarView_showEventIndicator, false)
-                eventIndicatorColor = getColor(R.styleable.CalendarView_eventIndicatorColor, Color.RED)
+                eventIndicatorColor =
+                    getColor(R.styleable.CalendarView_eventIndicatorColor, Color.RED)
                 //background
                 getColor(R.styleable.CalendarView_backgroundColor, 0)
                     .takeIf { it != 0 }?.let { root.setBackgroundColor(it) }
@@ -165,7 +165,15 @@ class CalendarView @JvmOverloads constructor(
         }
 
         gridDays.adapter = CalendarAdapter(context, cells, today, calendar).apply {
-            setStyle(backgroundColor, dayTextStyle, todayColor, selectedColor, selectedIndicator, showEventIndicator, eventIndicatorColor)
+            setStyle(
+                backgroundColor,
+                dayTextStyle,
+                todayColor,
+                selectedColor,
+                selectedIndicator,
+                showEventIndicator,
+                eventIndicatorColor
+            )
         }
     }
 
@@ -186,12 +194,9 @@ class CalendarView @JvmOverloads constructor(
                 calendar.set(Calendar.MONTH, cal.get(Calendar.MONTH))
                 setupCalendar()
             }
-
-
-            // Cập nhật màu trong adapter
-            (gridDays.adapter as? CalendarAdapter)?.setSelectedDate(selectedDate)
         }
-
+        // Cập nhật màu trong adapter
+        (gridDays.adapter as? CalendarAdapter)?.setSelectedDate(selectedDate)
     }
 
     fun getSelectedDate(): Date? {
@@ -215,10 +220,12 @@ class CalendarView @JvmOverloads constructor(
     fun getStyle(): String {
         return "backgroundColor: $backgroundColor, dayTextStyle: $dayTextStyle, todayColor: $todayColor, selectedColor: $selectedColor"
     }
-    fun addEvent(date: Date){
+
+    fun addEvent(date: Date) {
         (gridDays.adapter as? CalendarAdapter)?.addEvent(date)
     }
-    fun removeEvent(date: Date){
+
+    fun removeEvent(date: Date) {
         (gridDays.adapter as? CalendarAdapter)?.removeEvent(date)
     }
 }

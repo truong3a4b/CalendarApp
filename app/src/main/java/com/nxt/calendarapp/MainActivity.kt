@@ -29,7 +29,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         calendar.addEvent(Date())
-
+        button2.setOnClickListener {
+            calendar.setSelectedDate(null)
+        }
     }
 
 
