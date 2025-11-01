@@ -17,6 +17,7 @@
         app:nextIcon="@drawable/outline_arrow_right_alt_24"
         app:todayColor="#FF148B"
         app:selectedColor="#000000"
+        app:showEventIndicator="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:selectedIndicator="@drawable/bg_day_selected2"
         app:layout_constraintStart_toStartOf="parent"

@@ -29,5 +29,9 @@
 <!--        Selected day-->
         <attr name="selectedIndicator" format="reference"/>
         <attr name="selectedColor" format="color"/>
+
+<!--        Show event-->
+        <attr name="showEventIndicator" format="boolean" />
+        <attr name="eventIndicatorColor" format="color" />
     </declare-styleable>
 </resources>

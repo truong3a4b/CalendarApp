@@ -39,6 +39,8 @@ class CalendarView @JvmOverloads constructor(
     private var todayColor: Int = 0
     private var selectedColor: Int = 0
     private var selectedIndicator: Drawable? = null
+    private var showEventIndicator: Boolean = false
+    private var eventIndicatorColor: Int = Color.RED
 
     init {
         orientation = VERTICAL
@@ -69,11 +71,13 @@ class CalendarView @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
-                backgroundColor = getColor(R.styleable.CalendarView_backgroundColor, 0)
+                backgroundColor = getColor(R.styleable.CalendarView_backgroundColor, Color.WHITE)
                 dayTextStyle = getResourceId(R.styleable.CalendarView_dayTextStyle, 0)
                 todayColor = getColor(R.styleable.CalendarView_todayColor, Color.RED)
                 selectedColor = getColor(R.styleable.CalendarView_selectedColor, backgroundColor)
                 selectedIndicator = getDrawable(R.styleable.CalendarView_selectedIndicator)
+                showEventIndicator = getBoolean(R.styleable.CalendarView_showEventIndicator, false)
+                eventIndicatorColor = getColor(R.styleable.CalendarView_eventIndicatorColor, Color.RED)
                 //background
                 getColor(R.styleable.CalendarView_backgroundColor, 0)
                     .takeIf { it != 0 }?.let { root.setBackgroundColor(it) }
@@ -161,7 +165,7 @@ class CalendarView @JvmOverloads constructor(
         }
 
         gridDays.adapter = CalendarAdapter(context, cells, today, calendar).apply {
-            setStyle(backgroundColor, dayTextStyle, todayColor, selectedColor, selectedIndicator)
+            setStyle(backgroundColor, dayTextStyle, todayColor, selectedColor, selectedIndicator, showEventIndicator, eventIndicatorColor)
         }
     }
 

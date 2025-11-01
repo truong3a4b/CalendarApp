@@ -28,12 +28,13 @@ class CalendarAdapter(
     private val listEvent: MutableSet<String> = mutableSetOf()//luu tru danh sach ngay co su kien
 
     //thuoc tinh style
-    private var backgroundColor: Int = 0
+    private var backgroundColor: Int = Color.WHITE
     private var dayTextStyle: Int= 0
-    private var todayColor: Int = 0
-    private var selectedColor: Int = 0
+    private var todayColor: Int = Color.RED
+    private var selectedColor: Int = Color.BLUE
     private var selectedIndicator: Drawable? =null
-
+    private var showEventIndicator: Boolean = false
+    private var eventIndicatorColor: Int = Color.RED
 
     fun setSelectedDate(date: Date?) {
         selectedDate = date
@@ -83,12 +84,17 @@ class CalendarAdapter(
             }
         }
 
-        //kiem tra su kien
-        if(listEvent.contains(format.format(date))){
-            eventDot.visibility = View.VISIBLE
+        if(showEventIndicator){
+            //kiem tra su kien
+            if(listEvent.contains(format.format(date))){
+                eventDot.visibility = View.VISIBLE
+            }else{
+                eventDot.visibility = View.INVISIBLE
+            }
         }else{
-            eventDot.visibility = View.INVISIBLE
+            eventDot.visibility = View.GONE
         }
+
         return view
     }
 
@@ -98,7 +104,7 @@ class CalendarAdapter(
         return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
                 && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
     }
-    fun setStyle(backgroundColor: Int,dayTextStyle: Int, todayColor: Int, selectedColor: Int, selectedIndicator: Drawable?){
+    fun setStyle(backgroundColor: Int,dayTextStyle: Int, todayColor: Int, selectedColor: Int, selectedIndicator: Drawable?, showEventIndicator: Boolean, eventIndicatorColor: Int){
         this.backgroundColor = backgroundColor
         this.dayTextStyle = dayTextStyle
         this.todayColor = todayColor
@@ -107,6 +113,8 @@ class CalendarAdapter(
         if(selectedIndicator == null){
             this.selectedIndicator = context.getDrawable(R.drawable.bg_day_selected)
         }
+        this.showEventIndicator = showEventIndicator
+        this.eventIndicatorColor = eventIndicatorColor
     }
     fun addEvent(date: Date) {
         listEvent.add(format.format(date))
