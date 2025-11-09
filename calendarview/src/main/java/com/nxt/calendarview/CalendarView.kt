@@ -5,11 +5,12 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.GridView
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.widget.TextViewCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -25,7 +26,8 @@ class CalendarView @JvmOverloads constructor(
     private lateinit var btnPrevMonth: ImageButton
     private lateinit var btnNextMonth: ImageButton
     private lateinit var displayMonth: TextView
-    private lateinit var gridDays: GridView
+    private lateinit var gridDays: RecyclerView
+    private val cells = ArrayList<Date>()
     private val weekLabels = mutableListOf<TextView>()
 
     private var weekDays: Array<String>? = null
@@ -112,6 +114,25 @@ class CalendarView @JvmOverloads constructor(
                 recycle()
             }
         }
+        val recycler = findViewById<RecyclerView>(R.id.calendar_grid)
+        recycler.layoutManager = GridLayoutManager(context, 7)
+        gridDays.adapter = CalendarAdapter(
+            context, cells, today, calendar,
+            onDateClick = { selectedDate ->
+                onDateSelected?.invoke(selectedDate)
+                setSelectedDate(selectedDate)
+            }
+        ).apply {
+            setStyle(
+                backgroundColor,
+                dayTextStyle,
+                todayColor,
+                selectedColor,
+                selectedIndicator,
+                showEventIndicator,
+                eventIndicatorColor
+            )
+        }
         setupWeekLabels()
         setupCalendar()
 
@@ -127,11 +148,7 @@ class CalendarView @JvmOverloads constructor(
         displayMonth.setOnClickListener {
 
         }
-        gridDays.setOnItemClickListener { _, _, position, _ ->
-            val selectedDate = (gridDays.adapter.getItem(position) as Date)
-            onDateSelected?.invoke(selectedDate)
-            setSelectedDate(selectedDate)
-        }
+
     }
 
     private fun setupWeekLabels() {
@@ -147,8 +164,6 @@ class CalendarView @JvmOverloads constructor(
         val dateFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
         displayMonth.text = dateFormat.format(calendar.time)
 
-        //Tao danh sach ngay trong thang
-        val cells = ArrayList<Date>()
         val monthCalendar =
             calendar.clone() as Calendar //Sao chep de khong anh huong den calendar chinh
         monthCalendar.set(Calendar.DAY_OF_MONTH, 1) //Dat ve ngay dau tien cua thang
@@ -159,23 +174,14 @@ class CalendarView @JvmOverloads constructor(
             Calendar.DAY_OF_MONTH,
             -firstDayOfMonth
         ) // Di chuyen ve ngay dau tien trong tuan
+        cells.clear()
         // Them cac ngay vao danh sach den khi du so ngay can thiet de hien thi
         while (cells.size < 42) { //42 vi 6 hang x 7 cot
             cells.add(monthCalendar.time)
             monthCalendar.add(Calendar.DAY_OF_MONTH, 1) // Tang ngay len 1
         }
+        (gridDays.adapter as? CalendarAdapter)?.updateDays(cells)
 
-        gridDays.adapter = CalendarAdapter(context, cells, today, calendar).apply {
-            setStyle(
-                backgroundColor,
-                dayTextStyle,
-                todayColor,
-                selectedColor,
-                selectedIndicator,
-                showEventIndicator,
-                eventIndicatorColor
-            )
-        }
     }
 
 

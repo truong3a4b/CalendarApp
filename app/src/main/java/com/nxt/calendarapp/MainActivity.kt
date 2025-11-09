@@ -28,12 +28,11 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        calendar.addEvent(Date())
         button1.setOnClickListener { date ->
             Log.d("MainActivity", "Selected date: $date")
         }
         button2.setOnClickListener {
-            calendar.setSelectedDate(null)
+            calendar.addEvent(Date())
         }
     }
 

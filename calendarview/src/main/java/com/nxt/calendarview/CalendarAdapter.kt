@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import androidx.core.widget.TextViewCompat
+import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -16,10 +17,11 @@ import java.util.Locale
 
 class CalendarAdapter(
     private val context: Context,
-    private val days: List<Date>,
+    private var days: List<Date>,
     private val today: Date,
-    private val currentCalendar: Calendar = Calendar.getInstance()
-) : BaseAdapter() {
+    private val currentCalendar: Calendar = Calendar.getInstance(),
+    private val onDateClick: ((Date) -> Unit)? = null
+) : RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 
 
     private val dateFormat = SimpleDateFormat("d", Locale.getDefault())
@@ -41,62 +43,69 @@ class CalendarAdapter(
         notifyDataSetChanged() // Vẽ lại lưới
     }
 
-    override fun getCount() = days.size
-
-    override fun getItem(position: Int) = days[position]
-
-    override fun getItemId(position: Int) = position.toLong()
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val date = days[position]
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.calendar_view_cell, parent, false)
-        val tvDay = view.findViewById<TextView>(R.id.day)
-        val eventDot = view.findViewById<View>(R.id.event)
-
-        tvDay.text = dateFormat.format(date)
-
-
-
-
-
-        //chuyen date sang calendar de so sanh cho de
-        val cal = Calendar.getInstance().apply { time = date }
-        val isToday = sameDay(today, date)
-        val isCurrentMonth = cal.get(Calendar.MONTH) == currentCalendar.get(Calendar.MONTH)
-        val isSelected = selectedDate?.let { sameDay(date, selectedDate!!) } == true
-        TextViewCompat.setTextAppearance(tvDay, dayTextStyle)
-        when {
-            isSelected -> {
-                tvDay.background = selectedIndicator
-                tvDay.setTextColor(selectedColor)
-            }
-            isToday -> {
-                tvDay.setBackgroundColor(backgroundColor)
-                tvDay.setTextColor(todayColor)
-            }
-            !isCurrentMonth -> {
-                tvDay.setBackgroundColor(backgroundColor)
-                tvDay.setTextColor(Color.GRAY)
-            }
-            else -> {
-                tvDay.setBackgroundColor(backgroundColor)
-            }
-        }
-
-        if(showEventIndicator){
-            //kiem tra su kien
-            if(listEvent.contains(format.format(date))){
-                eventDot.visibility = View.VISIBLE
-            }else{
-                eventDot.visibility = View.INVISIBLE
-            }
-        }else{
-            eventDot.visibility = View.GONE
-        }
-
-        return view
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(context)
+            .inflate(R.layout.calendar_view_cell, parent, false)
+        return ViewHolder(view)
     }
+    override fun getItemCount(): Int = days.size
 
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val date = days[position]
+        holder.bind(date)
+    }
+    // endregion
+
+    // region === ViewHolder ===
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val tvDay = view.findViewById<TextView>(R.id.day)
+        private val eventDot = view.findViewById<View>(R.id.event)
+
+        fun bind(date: Date) {
+            tvDay.text = dateFormat.format(date)
+
+            //chuyen date sang calendar de so sanh cho de
+            val cal = Calendar.getInstance().apply { time = date }
+            val isToday = sameDay(today, date)
+            val isCurrentMonth = cal.get(Calendar.MONTH) == currentCalendar.get(Calendar.MONTH)
+            val isSelected = selectedDate?.let { sameDay(date, selectedDate!!) } == true
+            TextViewCompat.setTextAppearance(tvDay, dayTextStyle)
+            when {
+                isSelected -> {
+                    tvDay.background = selectedIndicator
+                    tvDay.setTextColor(selectedColor)
+                }
+                isToday -> {
+                    tvDay.setBackgroundColor(backgroundColor)
+                    tvDay.setTextColor(todayColor)
+                }
+                !isCurrentMonth -> {
+                    tvDay.setBackgroundColor(backgroundColor)
+                    tvDay.setTextColor(Color.GRAY)
+                }
+                else -> {
+                    tvDay.setBackgroundColor(backgroundColor)
+                }
+            }
+
+            if(showEventIndicator){
+                //kiem tra su kien
+                if(listEvent.contains(format.format(date))){
+                    eventDot.visibility = View.VISIBLE
+                }else{
+                    eventDot.visibility = View.INVISIBLE
+                }
+            }else{
+                eventDot.visibility = View.GONE
+            }
+
+            itemView.setOnClickListener {
+                selectedDate = date
+                notifyDataSetChanged()
+                onDateClick?.invoke(date)
+            }
+        }
+    }
     private fun sameDay(date1: Date, date2: Date): Boolean {
         val cal1 = Calendar.getInstance().apply { time = date1 }
         val cal2 = Calendar.getInstance().apply { time = date2 }
@@ -121,6 +130,10 @@ class CalendarAdapter(
     }
     fun removeEvent(date: Date) {
         listEvent.minus(date)
+        notifyDataSetChanged()
+    }
+    fun updateDays(newDays: List<Date>) {
+        days = newDays
         notifyDataSetChanged()
     }
 }
